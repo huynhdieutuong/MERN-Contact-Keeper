@@ -1,18 +1,27 @@
 import React, { Fragment, useContext } from "react";
+
 import ContactContext from "../../contexts/contact/contactContext";
+
 import ContactItem from "./ContactItem";
+import ContactFilter from "./ContactFilter";
 
 const Contacts = () => {
-  const { contacts } = useContext(ContactContext);
+  const { contacts, filtered } = useContext(ContactContext);
+
+  let datas;
+  if (filtered !== null) {
+    datas = filtered;
+  } else {
+    datas = contacts;
+  }
 
   return (
     <Fragment>
-      {contacts.length > 0 ? (
-        contacts.map(contact => (
-          <ContactItem key={contact.id} contact={contact} />
-        ))
+      <ContactFilter />
+      {datas.length > 0 ? (
+        datas.map(contact => <ContactItem key={contact.id} contact={contact} />)
       ) : (
-        <p>Not Found Contacts!</p>
+        <h4>Not Found Contacts!</h4>
       )}
     </Fragment>
   );
