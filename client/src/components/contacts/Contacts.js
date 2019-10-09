@@ -7,10 +7,13 @@ const Contacts = () => {
 
   return (
     <Fragment>
-      {contacts.length > 0 &&
+      {contacts.length > 0 ? (
         contacts.map(contact => (
           <ContactItem key={contact.id} contact={contact} />
-        ))}
+        ))
+      ) : (
+        <p>Not Found Contacts!</p>
+      )}
     </Fragment>
   );
 };
