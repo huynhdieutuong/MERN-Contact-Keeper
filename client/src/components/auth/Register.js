@@ -3,9 +3,11 @@ import React, { useState, useContext, useEffect } from "react";
 import AlertContext from "../../contexts/alert/alertContext";
 import AuthContext from "../../contexts/auth/authContext";
 
-const Register = () => {
+const Register = props => {
   const { setAlert } = useContext(AlertContext);
-  const { register, error, clearErrors } = useContext(AuthContext);
+  const { register, error, clearErrors, isAuthenticated } = useContext(
+    AuthContext
+  );
 
   const [formData, setFormData] = useState({
     name: "",
@@ -17,11 +19,16 @@ const Register = () => {
   const { name, email, password, password2 } = formData;
 
   useEffect(() => {
-    if (error !== null) {
+    if (isAuthenticated) {
+      props.history.push("/");
+    }
+
+    if (error === "User already exists") {
       setAlert(error, "danger");
       clearErrors();
     }
-  }, [error]);
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, props.history]);
 
   const onChange = e => {
     setFormData({
