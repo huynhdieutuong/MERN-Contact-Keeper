@@ -1,9 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import AlertContext from "../../contexts/alert/alertContext";
+import AuthContext from "../../contexts/auth/authContext";
 
 const Register = () => {
   const { setAlert } = useContext(AlertContext);
+  const { register, error, clearErrors } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -13,6 +15,13 @@ const Register = () => {
   });
 
   const { name, email, password, password2 } = formData;
+
+  useEffect(() => {
+    if (error !== null) {
+      setAlert(error, "danger");
+      clearErrors();
+    }
+  }, [error]);
 
   const onChange = e => {
     setFormData({
@@ -29,7 +38,7 @@ const Register = () => {
     if (password !== password2) {
       return setAlert("Password do not match", "danger");
     }
-    console.log(formData);
+    register({ name, email, password });
   };
 
   return (
