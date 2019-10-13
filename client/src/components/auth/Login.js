@@ -1,9 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import AlertContext from "../../contexts/alert/alertContext";
+import AuthContext from "../../contexts/auth/authContext";
 
-const Login = () => {
+const Login = props => {
   const { setAlert } = useContext(AlertContext);
+  const { login, isAuthenticated, error } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -11,6 +13,16 @@ const Login = () => {
   });
 
   const { email, password } = formData;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push("/");
+    }
+    if (error === "Invalid Credentials") {
+      setAlert(error, "danger");
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, props.history]);
 
   const onChange = e => {
     setFormData({
@@ -24,7 +36,7 @@ const Login = () => {
     if (email === "" || password === "") {
       return setAlert("Please enter all fileds", "danger");
     }
-    console.log(formData);
+    login(formData);
   };
 
   return (

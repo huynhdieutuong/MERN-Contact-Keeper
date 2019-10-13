@@ -20,7 +20,7 @@ import {
 const AuthState = props => {
   const initialState = {
     token: localStorage.getItem("token"),
-    isAuthenticated: null,
+    isAuthenticated: false,
     loading: true,
     user: null,
     error: null
@@ -52,7 +52,7 @@ const AuthState = props => {
   // Register User
   const register = async formData => {
     const config = {
-      header: {
+      headers: {
         "Content-Type": "application/json"
       }
     };
@@ -74,8 +74,36 @@ const AuthState = props => {
   };
 
   // Login User
+  const login = async formData => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+    try {
+      const res = await axios.post("/api/auth", formData, config);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data
+      });
+
+      loadUser();
+    } catch (error) {
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: error.response.data.msg
+      });
+
+      clearErrors();
+    }
+  };
 
   // Logout
+  const logout = () => {
+    dispatch({
+      type: LOGOUT
+    });
+  };
 
   // Clear Errors
   const clearErrors = () => {
@@ -92,7 +120,9 @@ const AuthState = props => {
         error,
         register,
         clearErrors,
-        loadUser
+        loadUser,
+        login,
+        logout
       }}
     >
       {props.children}
