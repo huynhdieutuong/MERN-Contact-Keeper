@@ -9,9 +9,7 @@ const Navbar = ({ title, icon }) => {
   );
 
   useEffect(() => {
-    if (token) {
-      loadUser();
-    }
+    loadUser();
     // eslint-disable-next-line
   }, []);
 
