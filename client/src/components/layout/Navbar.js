@@ -1,10 +1,19 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/auth/authContext";
 
 const Navbar = ({ title, icon }) => {
-  const { logout, isAuthenticated, user } = useContext(AuthContext);
+  const { logout, isAuthenticated, user, token, loadUser } = useContext(
+    AuthContext
+  );
+
+  useEffect(() => {
+    if (token) {
+      loadUser();
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const onLogout = () => {
     logout();
@@ -14,10 +23,10 @@ const Navbar = ({ title, icon }) => {
     <Fragment>
       <li>Hello {user && user.name}</li>
       <li>
-        <Link onClick={onLogout}>
+        <a href='#!' onClick={onLogout}>
           <i className='fas fa-sign-out-alt' />{" "}
           <span className='hide-sm'>Logout</span>
-        </Link>
+        </a>
       </li>
     </Fragment>
   );
