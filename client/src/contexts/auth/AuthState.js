@@ -36,10 +36,16 @@ const AuthState = props => {
 
     try {
       const res = await axios.get("/api/auth");
-      dispatch({
-        type: USER_LOADED,
-        payload: res.data
-      });
+      if (res.data === null) {
+        dispatch({
+          type: LOGOUT
+        });
+      } else {
+        dispatch({
+          type: USER_LOADED,
+          payload: res.data
+        });
+      }
     } catch (error) {
       dispatch({
         type: AUTH_ERROR

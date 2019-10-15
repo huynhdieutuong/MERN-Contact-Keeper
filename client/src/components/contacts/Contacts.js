@@ -30,18 +30,16 @@ const Contacts = () => {
       <ContactFilter />
       {loading ? (
         <Spinner />
-      ) : (
+      ) : datas.length > 0 ? (
         <TransitionGroup>
-          {datas.length > 0 ? (
-            datas.map(contact => (
-              <CSSTransition key={contact.id} timeout={300} classNames='item'>
-                <ContactItem contact={contact} />
-              </CSSTransition>
-            ))
-          ) : (
-            <h4>Not Found Contacts!</h4>
-          )}
+          {datas.map(contact => (
+            <CSSTransition key={contact._id} timeout={300} classNames='item'>
+              <ContactItem contact={contact} />
+            </CSSTransition>
+          ))}
         </TransitionGroup>
+      ) : (
+        <h4>Not Found Contacts!</h4>
       )}
     </Fragment>
   );
