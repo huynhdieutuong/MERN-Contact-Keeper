@@ -2,11 +2,11 @@ import React, { Fragment, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/auth/authContext";
+import ContactContext from "../../contexts/contact/contactContext";
 
 const Navbar = ({ title, icon }) => {
-  const { logout, isAuthenticated, user, token, loadUser } = useContext(
-    AuthContext
-  );
+  const { logout, isAuthenticated, user, loadUser } = useContext(AuthContext);
+  const { clearContacts } = useContext(ContactContext);
 
   useEffect(() => {
     loadUser();
@@ -14,6 +14,7 @@ const Navbar = ({ title, icon }) => {
   }, []);
 
   const onLogout = () => {
+    clearContacts();
     logout();
   };
 
